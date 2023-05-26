@@ -6,12 +6,12 @@ import androidx.lifecycle.ViewModel
 /**
  * Created by Jarvis Charles on 5/26/23.
  */
-class GameFragmentViewModel(private val blockRepository: BlockRepository): ViewModel() {
+class GameFragmentViewModel(): ViewModel() {
 
     val blockLiveData = MutableLiveData<List<Block>>()
     private val blockList = mutableListOf<Block>()
 
-    private var counter = 9
+    private var counter = 1
 
     fun getBlockData() {
         blockLiveData.value = generateBlocks()
@@ -22,8 +22,8 @@ class GameFragmentViewModel(private val blockRepository: BlockRepository): ViewM
         blockList.clear()
         do {
             blockList.add(Block("", counter))
-            counter --
-        } while (counter > 0)
+            counter ++
+        } while (counter < 10)
 
         return blockList
     }
