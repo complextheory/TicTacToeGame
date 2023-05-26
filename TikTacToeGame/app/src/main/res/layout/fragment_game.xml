@@ -11,144 +11,15 @@
     </data>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp">
+        android:layout_marginEnd="30dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/item_view_block">
 
 
     </androidx.recyclerview.widget.RecyclerView>
-
-
-<!--    <TableLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        tools:context=".GameFragment">-->
-
-<!--        <TableRow-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="center">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textSize="60dp" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button2"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textSize="60dp" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button3"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="60dp" />-->
-<!--        </TableRow>-->
-
-<!--        <TableRow-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="center">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button4"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="60dp" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button5"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="60dp" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button6"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="60dp" />-->
-<!--        </TableRow>-->
-
-<!--        <TableRow-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            android:gravity="center">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button7"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="60dp" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button8"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="60dp" />-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button9"-->
-<!--                android:layout_width="100dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="5dp"-->
-<!--                android:layout_marginTop="5dp"-->
-<!--                android:background="#FFFFFF"-->
-<!--                android:onClick="clickfun"-->
-<!--                android:textColor="#000000"-->
-<!--                android:textSize="60dp" />-->
-<!--        </TableRow>-->
-
-<!--        <LinearLayout-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:gravity="center">-->
-
-<!--            <Button-->
-<!--                android:id="@+id/button10"-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:text="Reset"-->
-<!--                android:onClick="reset"/>-->
-<!--        </LinearLayout>-->
-<!--    </TableLayout>-->
-
 
 </layout>

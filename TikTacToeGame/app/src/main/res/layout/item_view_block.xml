@@ -21,6 +21,7 @@
         android:layout_margin="6dp"
         app:cardCornerRadius="6dp"
         app:cardElevation="6dp"
+        app:cardBackgroundColor="@color/black"
         android:onClick="@{() -> blockItemClick.onBlockClicked(block)}">
 
         <TextView
