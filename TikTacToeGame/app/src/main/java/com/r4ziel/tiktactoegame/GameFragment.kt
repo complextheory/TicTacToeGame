@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -97,7 +98,9 @@ class GameFragment : Fragment() {
             build.setNegativeButton("Exit") { _, _ ->
                 exitProcess(0)
             }
-            build.show()
+            val alertDialog: AlertDialog = build.create()
+            alertDialog.window?.setGravity(Gravity.BOTTOM)
+            alertDialog.show()
         } else {
             Log.i("GameFragment", "Game Over winner is: " + viewModel.winner)
 
@@ -110,7 +113,9 @@ class GameFragment : Fragment() {
             build.setNegativeButton("Exit") { _, _ ->
                 exitProcess(0)
             }
-            build.show()
+            val alertDialog: AlertDialog = build.create()
+            alertDialog.window?.setGravity(Gravity.BOTTOM)
+            alertDialog.show()
         }
     }
 }
