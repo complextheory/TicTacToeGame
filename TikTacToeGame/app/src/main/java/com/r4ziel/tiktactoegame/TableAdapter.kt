@@ -1,5 +1,6 @@
 package com.r4ziel.tiktactoegame
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,6 +52,13 @@ class TableAdapter(
                 binding.blockItemClick = blockListner
                 binding.block = block
                 tvXOrO.text = block.xOrO
+
+                if (block.isClicked && block.playerClicked == 1){
+                    binding.blockView.setBackgroundColor(Color.BLUE)
+                }else if (block.isClicked && block.playerClicked == 2){
+                    binding.blockView.setBackgroundColor(Color.RED)
+                }else
+                    binding.blockView.setBackgroundColor(Color.BLACK)
             }
         }
 
