@@ -15,28 +15,30 @@ class GameFragmentViewModel : ViewModel() {
     private var player1BlockList = mutableListOf<Int>()
     private var player2BlockList = mutableListOf<Int>()
     private var drawGameBlockList = mutableListOf<Int>()
-    var playerTurn = 1
+    private var playerTurn = 1
     var winner = 0
 
     private var counter = 1
 
-    fun getBlockData() {
+    fun startGame() {
         blockLiveData.value = mutableListOf()
         isGameOverLiveData.value = false
         isDrawLiveData.value = false
         blockLiveData.postValue(generateBlocks())
     }
 
-    fun updateBlock(block: Block) {
+    fun updateTurn(block: Block) {
         blockLiveData.value?.get(block.id - 1)?.isClicked = true
 
         if (playerTurn == 1) {
             blockLiveData.value?.get(block.id - 1)?.xOrO = "X"
+            blockLiveData.value?.get(block.id - 1)?.playerClicked = 1
             player1BlockList.add(block.id)
             drawGameBlockList.add(block.id)
             playerTurn = 2
         } else {
             blockLiveData.value?.get(block.id - 1)?.xOrO = "O"
+            blockLiveData.value?.get(block.id - 1)?.playerClicked = 2
             player2BlockList.add(block.id)
             drawGameBlockList.add(block.id)
             playerTurn = 1
@@ -48,6 +50,10 @@ class GameFragmentViewModel : ViewModel() {
 
     }
 
+    /**
+     * Method for clearing board and repopulating
+     */
+
     private fun generateBlocks(): List<Block> {
         player1BlockList.clear()
         player2BlockList.clear()
@@ -55,14 +61,19 @@ class GameFragmentViewModel : ViewModel() {
         blockList.clear()
 
         do {
-            blockList.add(Block("", counter, false))
+            blockList.add(Block("", counter, false, 0))
             counter ++
         } while (counter < 10)
 
+        //Reset Values For Next Game
         playerTurn = 1
         counter = 1
         return blockList
     }
+
+    /**
+     * Methods Determining Win Lose Or Draw
+     */
 
     fun isDrawGame(): Boolean {
         return drawGameBlockList.contains(1) && drawGameBlockList.contains(2) && drawGameBlockList.contains(3) &&

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.r4ziel.tiktactoegame.databinding.FragmentGameBinding
@@ -28,7 +29,7 @@ class GameFragment : Fragment() {
         override fun onBlockClicked(block: Block) {
             if (!block.isClicked && !viewModel.isGameOver() && !viewModel.isDrawGame()){
                 Toast.makeText(requireContext(), block.id.toString(), Toast.LENGTH_SHORT).show()
-                viewModel.updateBlock(block)
+                viewModel.updateTurn(block)
             }
         }
     }
@@ -49,7 +50,7 @@ class GameFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.getBlockData()
+        viewModel.startGame()
         observeViewModel()
     }
 
@@ -91,7 +92,7 @@ class GameFragment : Fragment() {
             build.setTitle("Game Over")
             build.setMessage("The game ended in a draw..."+"\n\n"+"Do you want to play again")
             build.setPositiveButton("Ok") { _, _ ->
-                viewModel.getBlockData()
+                viewModel.startGame()
             }
             build.setNegativeButton("Exit") { _, _ ->
                 exitProcess(0)
@@ -104,7 +105,7 @@ class GameFragment : Fragment() {
             build.setTitle("Game Over")
             build.setMessage("Player: "+viewModel.winner+ " is the winner..."+"\n\n"+"Do you want to play again")
             build.setPositiveButton("Ok") { _, _ ->
-                viewModel.getBlockData()
+                viewModel.startGame()
             }
             build.setNegativeButton("Exit") { _, _ ->
                 exitProcess(0)

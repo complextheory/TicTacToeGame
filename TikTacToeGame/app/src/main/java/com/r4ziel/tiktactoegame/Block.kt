@@ -7,5 +7,6 @@ data class Block (
 
     var xOrO: String,
     val id: Int,
-    var isClicked: Boolean
+    var isClicked: Boolean,
+    var playerClicked: Int
 )

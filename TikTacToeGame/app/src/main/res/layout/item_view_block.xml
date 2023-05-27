@@ -22,6 +22,7 @@
         app:cardCornerRadius="5dp"
         app:cardElevation="5dp"
         app:cardBackgroundColor="@color/black"
+        android:id="@+id/block_view"
         android:onClick="@{() -> blockItemClick.onBlockClicked(block)}">
 
         <TextView
