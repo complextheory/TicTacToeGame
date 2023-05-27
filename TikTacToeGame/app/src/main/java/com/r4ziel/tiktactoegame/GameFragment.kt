@@ -1,6 +1,7 @@
 package com.r4ziel.tiktactoegame
 
 import android.app.AlertDialog
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -23,7 +24,6 @@ class GameFragment : Fragment() {
 
     private lateinit var binding: FragmentGameBinding
 
-
     private val blockItemClickListner = object: BlockClickListner {
         override fun onBlockClicked(block: Block) {
             if (!block.isClicked && !viewModel.isGameOver() && !viewModel.isDrawGame()){
@@ -39,20 +39,17 @@ class GameFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
         binding = FragmentGameBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.recyclerview.adapter = tableAdapter
         binding.recyclerview.layoutManager = GridLayoutManager(activity, 3, GridLayoutManager.VERTICAL, false)
 
         return binding.root
-
     }
 
     override fun onResume() {
         super.onResume()
         viewModel.getBlockData()
-        Log.i("GameFragment", "Should Generate Blocks Blocklist is: " + viewModel.blockLiveData.value?.size)
         observeViewModel()
     }
 
@@ -60,19 +57,18 @@ class GameFragment : Fragment() {
         super.onStop()
         viewModel.blockLiveData.removeObservers(viewLifecycleOwner)
         viewModel.isGameOverLiveData.removeObservers(viewLifecycleOwner)
+        viewModel.isDrawLiveData.removeObservers(viewLifecycleOwner)
     }
 
     private fun observeViewModel() {
         viewModel.blockLiveData.observe(viewLifecycleOwner) {
             it?.let { blocks ->
                 tableAdapter.update(blocks)
-//                Log.i("GameFragment", "Should Update Blocks Blocklist is: " + viewModel.blockLiveData.value?.get(0)?.isClicked.toString())
             }
         }
 
         viewModel.isDrawLiveData.observe(viewLifecycleOwner) {
             it?.let {
-
                 if (it) {
                     showDialog(true)
                 }
@@ -81,7 +77,6 @@ class GameFragment : Fragment() {
 
         viewModel.isGameOverLiveData.observe(viewLifecycleOwner) {
             it?.let {
-
                 if (it) {
                     showDialog(false)
                 }
@@ -107,7 +102,7 @@ class GameFragment : Fragment() {
 
             val build = AlertDialog.Builder(activity)
             build.setTitle("Game Over")
-            build.setMessage("Player:"+viewModel.winner+ " is the winner..."+"\n\n"+"Do you want to play again")
+            build.setMessage("Player: "+viewModel.winner+ " is the winner..."+"\n\n"+"Do you want to play again")
             build.setPositiveButton("Ok") { _, _ ->
                 viewModel.getBlockData()
             }

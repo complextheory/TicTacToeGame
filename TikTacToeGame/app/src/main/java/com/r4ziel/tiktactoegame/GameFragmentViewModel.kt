@@ -15,7 +15,7 @@ class GameFragmentViewModel : ViewModel() {
     private var player1BlockList = mutableListOf<Int>()
     private var player2BlockList = mutableListOf<Int>()
     private var drawGameBlockList = mutableListOf<Int>()
-    private var playerTurn = 1
+    var playerTurn = 1
     var winner = 0
 
     private var counter = 1
@@ -29,12 +29,12 @@ class GameFragmentViewModel : ViewModel() {
 
     fun updateBlock(block: Block) {
         blockLiveData.value?.get(block.id - 1)?.isClicked = true
+
         if (playerTurn == 1) {
             blockLiveData.value?.get(block.id - 1)?.xOrO = "X"
             player1BlockList.add(block.id)
             drawGameBlockList.add(block.id)
             playerTurn = 2
-
         } else {
             blockLiveData.value?.get(block.id - 1)?.xOrO = "O"
             player2BlockList.add(block.id)
@@ -53,6 +53,7 @@ class GameFragmentViewModel : ViewModel() {
         player2BlockList.clear()
         drawGameBlockList.clear()
         blockList.clear()
+
         do {
             blockList.add(Block("", counter, false))
             counter ++

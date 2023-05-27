@@ -16,11 +16,11 @@
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="100dp"
+        android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:layout_margin="6dp"
-        app:cardCornerRadius="6dp"
-        app:cardElevation="6dp"
+        android:layout_margin="5dp"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp"
         app:cardBackgroundColor="@color/black"
         android:onClick="@{() -> blockItemClick.onBlockClicked(block)}">
 
