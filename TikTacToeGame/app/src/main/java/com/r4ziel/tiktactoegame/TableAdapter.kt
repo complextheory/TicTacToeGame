@@ -3,6 +3,7 @@ package com.r4ziel.tiktactoegame
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.r4ziel.tiktactoegame.databinding.ItemViewBlockBinding
 import com.r4ziel.tiktactoegame.utilities.BlockClickListner
@@ -15,9 +16,7 @@ class TableAdapter(
     private val blockListner: BlockClickListner
 ) : RecyclerView.Adapter<TableAdapter.ViewHolder>(){
 
-
     private var blockList: MutableList<Block> = mutableListOf()
-
 
     fun update(data: List<Block>) {
         blockList.clear()
