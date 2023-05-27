@@ -16,10 +16,7 @@ class TableAdapter(
     private val blockListner: BlockClickListner
 ) : RecyclerView.Adapter<TableAdapter.ViewHolder>(){
 
-
     private var blockList: MutableList<Block> = mutableListOf()
-    var isClicked = false
-
 
     fun update(data: List<Block>) {
         blockList.clear()
