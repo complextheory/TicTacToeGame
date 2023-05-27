@@ -26,10 +26,11 @@ class GameFragment : Fragment() {
 
     private val blockItemClickListner = object: BlockClickListner {
         override fun onBlockClicked(block: Block) {
-            Toast.makeText(requireContext(), block.id.toString(), Toast.LENGTH_SHORT).show()
-
+            if (!block.isClicked && !viewModel.isGameOver()){
+                Toast.makeText(requireContext(), block.id.toString(), Toast.LENGTH_SHORT).show()
+                viewModel.updateBlock(block)
+            }
         }
-
     }
 
 
@@ -65,6 +66,8 @@ class GameFragment : Fragment() {
         viewModel.blockLiveData.observe(viewLifecycleOwner) {
             it?.let { blocks ->
                 tableAdapter.update(blocks)
+                Log.i("GameFragment", "Should Update Blocks Blocklist is: " + viewModel.blockLiveData.value?.get(0)?.isClicked.toString())
+
             }
         }
     }

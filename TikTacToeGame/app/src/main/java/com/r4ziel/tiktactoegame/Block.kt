@@ -6,5 +6,6 @@ package com.r4ziel.tiktactoegame
 data class Block (
 
     var xOrO: String,
-    val id: Int
+    val id: Int,
+    var isClicked: Boolean
 )

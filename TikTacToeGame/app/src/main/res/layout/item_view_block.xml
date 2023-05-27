@@ -14,7 +14,7 @@
             name="blockItemClick"
             type="com.r4ziel.tiktactoegame.utilities.BlockClickListner" />
     </data>
-    
+
     <androidx.cardview.widget.CardView
         android:layout_width="100dp"
         android:layout_height="100dp"
@@ -30,7 +30,8 @@
             android:id="@+id/tv_xOrO"
             android:textSize="18sp"
             android:padding="6dp"
-            android:gravity="center"/>
+            android:layout_gravity="center"
+            android:textColor="@color/white"/>
 
     </androidx.cardview.widget.CardView>
 
