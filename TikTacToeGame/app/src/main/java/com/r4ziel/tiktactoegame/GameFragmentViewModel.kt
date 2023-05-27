@@ -6,12 +6,17 @@ import androidx.lifecycle.ViewModel
 /**
  * Created by Jarvis Charles on 5/26/23.
  */
+/* Prince:
+    7) Please write tests for this viewModel
+    8) The game clears on screen rotation. How would you fix this?
+*/
 class GameFragmentViewModel : ViewModel() {
 
     var blockLiveData = MutableLiveData<List<Block>>()
     var isGameOverLiveData = MutableLiveData<Boolean>()
     var isDrawLiveData = MutableLiveData<Boolean>()
     private var blockList = mutableListOf<Block>()
+    // Prince: 3) How could you use less than three lists?
     private var player1BlockList = mutableListOf<Int>()
     private var player2BlockList = mutableListOf<Int>()
     private var drawGameBlockList = mutableListOf<Int>()
@@ -75,12 +80,14 @@ class GameFragmentViewModel : ViewModel() {
      * Methods Determining Win Lose Or Draw
      */
 
+    //  Prince: 1) What's another way you can check this logic using this list?
     fun isDrawGame(): Boolean {
         return drawGameBlockList.contains(1) && drawGameBlockList.contains(2) && drawGameBlockList.contains(3) &&
             drawGameBlockList.contains(4) && drawGameBlockList.contains(5) && drawGameBlockList.contains(6) &&
             drawGameBlockList.contains(7) && drawGameBlockList.contains(8) && drawGameBlockList.contains(9)
     }
 
+    //  Prince: 2) There are multiple returns here. How could you reduce this?
     fun isGameOver(): Boolean {
 
         if ((player1BlockList.contains(1) && player1BlockList.contains(2) && player1BlockList.contains(3)) ||
