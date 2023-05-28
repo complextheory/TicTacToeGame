@@ -87,7 +87,7 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewMode
      * Method for clearing board and repopulating
      */
 
-    private fun generateBlocks(): List<Block> {
+    fun generateBlocks(): List<Block> {
         player1BlockList.clear()
         player2BlockList.clear()
         drawGameBlockList.clear()

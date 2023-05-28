@@ -3,12 +3,15 @@ package com.r4ziel.tiktactoegame
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import kotlin.test.assertFails
+import kotlin.test.assertNotNull
 
 
 /**
@@ -73,6 +76,58 @@ class GameFragmentViewModelTest{
         counter = 1
 
         return blocklist
+    }
+
+    @Test
+    fun gameFragmentViewModel_GameIsStarted_ValuesAreSet() {
+        playerTurn = 1
+
+        savedStateHandle = SavedStateHandle(mapOf(
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
+        ))
+
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+
+        viewModel.startGame()
+
+        isGameInProcess = viewModel.isGameInProgress
+
+        assertNotNull(blockLiveData.value)
+        assert(isGameOverLiveData.value == false)
+        assert(isDrawLiveData.value == false)
+        assert(isGameInProcess)
+    }
+
+    @Test
+    fun gameFragmentViewModel_BlocksAreGenerated_AllListsAreCleared_BlockListIsGenerated() {
+        playerTurn = 1
+
+        savedStateHandle = SavedStateHandle(mapOf(
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
+        ))
+
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+
+        viewModel.generateBlocks()
+
+        assert(player1BlockList.size == 0)
+        assert(player2BlockList.size == 0)
+        assert(drawGameBlockList.size == 0)
+        assert(blocklist.size == 9)
     }
 
     @Test
@@ -206,6 +261,28 @@ class GameFragmentViewModelTest{
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assert(!viewModel.isDrawGame())
+    }
+
+    @Test
+    fun gameFragmentViewModel_Player2Wins_GameIsOver() {
+        playerTurn = 1
+        player1BlockList = mutableListOf(4, 6, 9, 7)
+        player2BlockList = mutableListOf(5, 1, 2, 3)
+
+        savedStateHandle = SavedStateHandle(mapOf(
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
+        ))
+
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+
+        assertTrue(viewModel.isGameOver())
     }
 
     @Test
