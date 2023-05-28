@@ -25,7 +25,7 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewMode
             MutableLiveData<Boolean>()
         } as MutableLiveData<Boolean>
 
-    private var blockList: MutableList<Block> =
+    var blockList: MutableList<Block> =
         savedState.get<MutableList<Block>>(BLOCK_LIST_KEY) ?: mutableListOf()
     var player1BlockList: MutableList<Int> =
         savedState.get<MutableList<Int>>(PLAYER_1_LIST_KEY) ?: mutableListOf()
@@ -45,9 +45,9 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewMode
         private const val PLAYER_2_LIST_KEY = "PLAYER_2_LIST_KEY"
         private const val DRAW_GAME_LIST_KEY = "DRAW_GAME_LIST_KEY"
         private const val PLAYER_TURN_KEY = "PLAYER_TURN_KEY"
-        private const val IS_GAME_OVER_KEY = "IS_GAME_OVER"
+        private const val IS_GAME_OVER_KEY = "IS_GAME_OVER_KEY"
         private const val IS_DRAW_KEY = "IS_DRAW_KEY"
-        private const val WINNER_KEY = "WINNER"
+        private const val WINNER_KEY = "WINNER_KEY"
         private const val IS_GAME_IN_PROGRESS_KEY = "IS_GAME_IN_PROGRESS_KEY"
     }
 
@@ -77,7 +77,7 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewMode
             playerTurn = 1
         }
 
-        blockLiveData.value = blockLiveData.value
+        blockLiveData.postValue(blockLiveData.value)
         isGameOverLiveData.postValue(isGameOver())
         isDrawLiveData.postValue(isDrawGame())
         updateSavedState()

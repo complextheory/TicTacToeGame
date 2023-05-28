@@ -55,6 +55,10 @@ android {
     androidExtensions {
         experimental = true
     }
+
+    testOptions {
+        unitTests.returnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -74,10 +78,14 @@ dependencies {
     //Koin Dependency
     implementation 'io.insert-koin:koin-core:3.4.0'
     implementation 'io.insert-koin:koin-android:3.4.0'
+    testImplementation("io.insert-koin:koin-test-junit5:3.4.0")
 
-
+    testImplementation 'android.arch.core:core-testing:1.1.1'
+    testImplementation 'androidx.arch.core:core-testing:2.2.0'
+    androidTestImplementation 'androidx.arch.core:core-testing:2.2.0'
 
     testImplementation 'junit:junit:4.13.2'
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }
