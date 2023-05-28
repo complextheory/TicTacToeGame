@@ -3,7 +3,6 @@ package com.r4ziel.tiktactoegame
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -19,22 +18,19 @@ import org.junit.runners.JUnit4
 @RunWith(JUnit4::class)
 class GameFragmentViewModelTest{
 
-
-    // or actually pass data with:
-    // SavedStateHandle(mapOf("foo" to 0))
     private lateinit var viewModel: GameFragmentViewModel
     private lateinit var savedStateHandle: SavedStateHandle
-    var blocklist = mutableListOf<Block>()
-    var blockLiveData = MutableLiveData<List<Block>>()
-    var player1BlockList = mutableListOf<Int>()
-    var player2BlockList = mutableListOf<Int>()
-    var drawGameBlockList = mutableListOf<Int>()
-    var playerTurn = 1
-    var winner = 0
-    var isGameInProcess = false
-    var isDrawLiveData =  MutableLiveData<Boolean>()
-    var isGameOverLiveData =  MutableLiveData<Boolean>()
-    var counter = 1
+    private var blocklist = mutableListOf<Block>()
+    private var blockLiveData = MutableLiveData<List<Block>>()
+    private var player1BlockList = mutableListOf<Int>()
+    private var player2BlockList = mutableListOf<Int>()
+    private var drawGameBlockList = mutableListOf<Int>()
+    private var playerTurn = 1
+    private var winner = 0
+    private var isGameInProcess = false
+    private var isDrawLiveData =  MutableLiveData<Boolean>()
+    private var isGameOverLiveData =  MutableLiveData<Boolean>()
+    private var counter = 1
 
     companion object {
         private const val BLOCK_LIST_KEY = "BLOCK_LIST_KEY"
@@ -85,14 +81,14 @@ class GameFragmentViewModelTest{
         blocklist[2].isClicked = true
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
@@ -108,14 +104,14 @@ class GameFragmentViewModelTest{
         blocklist[2].isClicked = true
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
@@ -139,15 +135,16 @@ class GameFragmentViewModelTest{
         }while (counter < 10)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assert(viewModel.isDrawGame())
@@ -167,15 +164,16 @@ class GameFragmentViewModelTest{
         }while (counter < 9)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assert(!viewModel.isDrawGame())
@@ -195,15 +193,16 @@ class GameFragmentViewModelTest{
         }while (counter < 9)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assert(!viewModel.isDrawGame())
@@ -216,15 +215,16 @@ class GameFragmentViewModelTest{
         player2BlockList = mutableListOf(5, 7)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assertTrue(viewModel.isGameOver())
@@ -237,15 +237,16 @@ class GameFragmentViewModelTest{
         player2BlockList = mutableListOf(9, 7)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assertTrue(viewModel.isGameOver())
@@ -258,15 +259,16 @@ class GameFragmentViewModelTest{
         player2BlockList = mutableListOf(4, 7)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assertTrue(viewModel.isGameOver())
@@ -279,15 +281,16 @@ class GameFragmentViewModelTest{
         player2BlockList = mutableListOf(5, 9)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assertTrue(viewModel.isGameOver())
@@ -300,15 +303,16 @@ class GameFragmentViewModelTest{
         player2BlockList = mutableListOf(4, 7)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assertTrue(viewModel.isGameOver())
@@ -321,15 +325,16 @@ class GameFragmentViewModelTest{
         player2BlockList = mutableListOf(4, 7)
 
         savedStateHandle = SavedStateHandle(mapOf(
-            "BLOCK_LIST_KEY" to blocklist,
-            "PLAYER_1_LIST_KEY" to player1BlockList,
-            "PLAYER_2_LIST_KEY" to player2BlockList,
-            "DRAW_GAME_LIST_KEY" to drawGameBlockList,
-            "PLAYER_TURN_KEY" to playerTurn,
-            "IS_GAME_OVER" to isGameOverLiveData.value,
-            "IS_DRAW_KEY" to isDrawLiveData.value,
-            "IS_GAME_IN_PROGRESS_KEY" to isGameInProcess
+            BLOCK_LIST_KEY to blocklist,
+            PLAYER_1_LIST_KEY to player1BlockList,
+            PLAYER_2_LIST_KEY to player2BlockList,
+            DRAW_GAME_LIST_KEY to drawGameBlockList,
+            PLAYER_TURN_KEY to playerTurn,
+            IS_GAME_OVER_KEY to isGameOverLiveData.value,
+            IS_DRAW_KEY to isDrawLiveData.value,
+            IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
+
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
         assertTrue(viewModel.isGameOver())
