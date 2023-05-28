@@ -3,16 +3,13 @@ package com.r4ziel.tiktactoegame
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
-import kotlin.test.assertFails
 import kotlin.test.assertNotNull
-
 
 /**
  * Created by Jarvis Charles on 5/28/23.
@@ -124,9 +121,9 @@ class GameFragmentViewModelTest{
 
         viewModel.generateBlocks()
 
-        assert(player1BlockList.size == 0)
-        assert(player2BlockList.size == 0)
-        assert(drawGameBlockList.size == 0)
+        assert(player1BlockList.isEmpty())
+        assert(player2BlockList.isEmpty())
+        assert(drawGameBlockList.isEmpty())
         assert(blocklist.size == 9)
     }
 
