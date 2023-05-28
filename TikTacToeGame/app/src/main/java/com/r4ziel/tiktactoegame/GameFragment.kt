@@ -33,7 +33,7 @@ class GameFragment : Fragment() {
         }
     }
 
-    private val tableAdapter = TableAdapter(blockListner = blockItemClickListener)
+    private val tableAdapter = TableAdapter(blockListener = blockItemClickListener)
 
 
     override fun onCreateView(
