@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.r4ziel.tiktactoegame.databinding.ItemViewBlockBinding
-import com.r4ziel.tiktactoegame.utilities.BlockClickListner
+import com.r4ziel.tiktactoegame.utilities.BlockClickListener
 
 /**
  * Created by Jarvis Charles on 5/26/23.
  */
 class TableAdapter(
-    private val blockListener: BlockClickListner
+    private val blockListener: BlockClickListener
 ) : RecyclerView.Adapter<TableAdapter.ViewHolder>(){
 
     private var blockList: MutableList<Block> = mutableListOf()

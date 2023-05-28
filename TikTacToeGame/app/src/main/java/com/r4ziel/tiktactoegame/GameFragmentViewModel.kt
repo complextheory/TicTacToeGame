@@ -24,7 +24,6 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewMode
         MutableLiveData<Boolean>()
     } as MutableLiveData<Boolean>
 
-
     private var blockList: MutableList<Block> =
         savedState.get<MutableList<Block>>(BLOCK_LIST_KEY) ?: mutableListOf()
     var player1BlockList: MutableList<Int> =
@@ -53,8 +52,6 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewMode
         private const val WINNER_KEY = "WINNER"
         private const val IS_GAME_IN_PROGRESS_KEY = "IS_GAME_IN_PROGRESS_KEY"
     }
-
-
 
     fun startGame() {
         isGameInProgress = true

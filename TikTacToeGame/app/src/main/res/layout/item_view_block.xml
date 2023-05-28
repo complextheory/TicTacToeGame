@@ -12,7 +12,7 @@
 
         <variable
             name="blockItemClick"
-            type="com.r4ziel.tiktactoegame.utilities.BlockClickListner" />
+            type="com.r4ziel.tiktactoegame.utilities.BlockClickListener" />
     </data>
 
     <androidx.cardview.widget.CardView

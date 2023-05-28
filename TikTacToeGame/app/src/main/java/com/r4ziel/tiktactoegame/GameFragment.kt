@@ -11,7 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.r4ziel.tiktactoegame.databinding.FragmentGameBinding
-import com.r4ziel.tiktactoegame.utilities.BlockClickListner
+import com.r4ziel.tiktactoegame.utilities.BlockClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.system.exitProcess
 
@@ -24,7 +24,7 @@ class GameFragment : Fragment() {
 
     private lateinit var binding: FragmentGameBinding
 
-    private val blockItemClickListener = object: BlockClickListner {
+    private val blockItemClickListener = object: BlockClickListener {
         override fun onBlockClicked(block: Block) {
             if (!block.isClicked && !viewModel.isGameOver() && !viewModel.isDrawGame()){
                 Toast.makeText(requireContext(), block.id.toString(), Toast.LENGTH_SHORT).show()
@@ -34,7 +34,6 @@ class GameFragment : Fragment() {
     }
 
     private val tableAdapter = TableAdapter(blockListener = blockItemClickListener)
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
