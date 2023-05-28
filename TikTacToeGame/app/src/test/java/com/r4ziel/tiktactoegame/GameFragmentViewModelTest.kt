@@ -106,7 +106,7 @@ class GameFragmentViewModelTest{
     }
 
     @Test
-    fun gameFragmentViewModel_BlocksAreGenerated_AllListsAreCleared_BlockListIsGenerated() {
+    fun gameFragmentViewModel_BlocksAreGenerated_AllListsAreCleared() {
         playerTurn = 1
 
         savedStateHandle = SavedStateHandle(mapOf(
@@ -131,7 +131,7 @@ class GameFragmentViewModelTest{
     }
 
     @Test
-    fun gameFragmentViewModel_PlayerTurnIs1SavedStateIsSavedPlayerTurnIsUpdated() {
+    fun gameFragmentViewModel_PlayerTurnIs1_SavedStateIsSaved_PlayerTurnIsUpdated() {
         playerTurn = 1
         blocklist[2].isClicked = true
 
@@ -154,7 +154,7 @@ class GameFragmentViewModelTest{
     }
 
     @Test
-    fun gameFragmentViewModel_PlayerTurnIs2SavedStateIsSavedPlayerTurnIsUpdated() {
+    fun gameFragmentViewModel_PlayerTurnIs2_SavedStateIsSaved_PlayerTurnIsUpdated() {
         playerTurn = 2
         blocklist[2].isClicked = true
 
@@ -177,7 +177,7 @@ class GameFragmentViewModelTest{
     }
 
     @Test
-    fun gameFragmentViewModel_IsDrawBlockListFullBothPlayerListsFull_GameIsDraw() {
+    fun gameFragmentViewModel_IsDrawBlockListFull_BothPlayerListsFull_GameIsDraw() {
         playerTurn = 1
         blocklist[2].isClicked = true
 
@@ -206,7 +206,7 @@ class GameFragmentViewModelTest{
     }
 
     @Test
-    fun gameFragmentViewModel_IsDrawBlockListNotFullBothPlayerListsFull_GameIsNotDraw() {
+    fun gameFragmentViewModel_IsDrawBlockListNotFull_BothPlayerListsFull_GameIsNotDraw() {
         playerTurn = 1
         blocklist[2].isClicked = true
 
@@ -235,7 +235,7 @@ class GameFragmentViewModelTest{
     }
 
     @Test
-    fun gameFragmentViewModel_Player1WinsIsDrawGameFragmentFull_GameIsNotDraw() {
+    fun gameFragmentViewModel_Player1Wins_IsDrawGameFragmentFull_GameIsNotDraw() {
         playerTurn = 1
         blocklist[2].isClicked = true
 
