@@ -2,19 +2,16 @@ package com.r4ziel.tiktactoegame
 
 import android.graphics.Color
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.r4ziel.tiktactoegame.databinding.ItemViewBlockBinding
-import com.r4ziel.tiktactoegame.utilities.BlockClickListner
-import java.util.*
+import com.r4ziel.tiktactoegame.utilities.BlockClickListener
 
 /**
  * Created by Jarvis Charles on 5/26/23.
  */
 class TableAdapter(
-    private val blockListner: BlockClickListner
+    private val blockListener: BlockClickListener
 ) : RecyclerView.Adapter<TableAdapter.ViewHolder>(){
 
     private var blockList: MutableList<Block> = mutableListOf()
@@ -49,18 +46,19 @@ class TableAdapter(
         fun bind(block: Block) {
 
             binding.apply {
-                binding.blockItemClick = blockListner
+                binding.blockItemClick = blockListener
                 binding.block = block
                 tvXOrO.text = block.xOrO
+                binding.blockView.setBackgroundColor(Color.BLACK)
 
-                if (block.isClicked && block.playerClicked == 1){
-                    binding.blockView.setBackgroundColor(Color.BLUE)
-                }else if (block.isClicked && block.playerClicked == 2){
-                    binding.blockView.setBackgroundColor(Color.RED)
-                }else
-                    binding.blockView.setBackgroundColor(Color.BLACK)
+                if (block.isClicked){
+                    when (block.player) {
+                        1 -> binding.blockView.setBackgroundColor(Color.BLUE)
+                        2 -> binding.blockView.setBackgroundColor(Color.RED)
+
+                    }
+                }
             }
         }
-
     }
 }

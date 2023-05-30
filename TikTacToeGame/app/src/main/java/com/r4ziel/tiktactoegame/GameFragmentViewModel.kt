@@ -1,30 +1,63 @@
 package com.r4ziel.tiktactoegame
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.switchMap
 
 /**
- * Created by Jarvis Charles on 5/26/23.
+ * Created by Jarvis Charles on 5/26/23  Main Game ViewModel Responsible for Business Logic.
  */
-class GameFragmentViewModel : ViewModel() {
+class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewModel() {
 
-    var blockLiveData = MutableLiveData<List<Block>>()
-    var isGameOverLiveData = MutableLiveData<Boolean>()
-    var isDrawLiveData = MutableLiveData<Boolean>()
-    private var blockList = mutableListOf<Block>()
-    private var player1BlockList = mutableListOf<Int>()
-    private var player2BlockList = mutableListOf<Int>()
-    private var drawGameBlockList = mutableListOf<Int>()
-    private var playerTurn = 1
-    var winner = 0
+    var blockLiveData: MutableLiveData<List<Block>> =
+        savedState.getLiveData<List<Block>>(BLOCK_LIST_KEY).switchMap {
+            MutableLiveData<List<Block>>()
+        } as MutableLiveData<List<Block>>
+
+    var isGameOverLiveData: MutableLiveData<Boolean> =
+        savedState.getLiveData<Boolean>(IS_GAME_OVER_KEY).switchMap {
+            MutableLiveData<Boolean>()
+        } as MutableLiveData<Boolean>
+
+    var isDrawLiveData: MutableLiveData<Boolean> =
+        savedState.getLiveData<Boolean>(IS_DRAW_KEY).switchMap {
+            MutableLiveData<Boolean>()
+        } as MutableLiveData<Boolean>
+
+    private var blockList =
+        savedState.get<MutableList<Block>>(BLOCK_LIST_KEY) ?: mutableListOf()
+    private var player1BlockList =
+        savedState.get<MutableList<Int>>(PLAYER_1_LIST_KEY) ?: mutableListOf()
+    private var player2BlockList =
+        savedState.get<MutableList<Int>>(PLAYER_2_LIST_KEY) ?: mutableListOf()
+    private var drawGameBlockList =
+        savedState.get<MutableList<Int>>(DRAW_GAME_LIST_KEY) ?: mutableListOf()
+    private var playerTurn: Int = savedState.get<Int>(PLAYER_TURN_KEY) ?: 1
+    var winner: Int = savedState.get<Int>(WINNER_KEY) ?: 0
+    var isGameInProgress = savedState.get<Boolean>(IS_GAME_IN_PROGRESS_KEY) ?: false
 
     private var counter = 1
 
+    companion object {
+        private const val BLOCK_LIST_KEY = "BLOCK_LIST_KEY"
+        private const val PLAYER_1_LIST_KEY = "PLAYER_1_LIST_KEY"
+        private const val PLAYER_2_LIST_KEY = "PLAYER_2_LIST_KEY"
+        private const val DRAW_GAME_LIST_KEY = "DRAW_GAME_LIST_KEY"
+        private const val PLAYER_TURN_KEY = "PLAYER_TURN_KEY"
+        private const val IS_GAME_OVER_KEY = "IS_GAME_OVER_KEY"
+        private const val IS_DRAW_KEY = "IS_DRAW_KEY"
+        private const val WINNER_KEY = "WINNER_KEY"
+        private const val IS_GAME_IN_PROGRESS_KEY = "IS_GAME_IN_PROGRESS_KEY"
+    }
+
     fun startGame() {
+        isGameInProgress = true
         blockLiveData.value = mutableListOf()
         isGameOverLiveData.value = false
         isDrawLiveData.value = false
         blockLiveData.postValue(generateBlocks())
+        updateSavedState()
     }
 
     fun updateTurn(block: Block) {
@@ -32,29 +65,29 @@ class GameFragmentViewModel : ViewModel() {
 
         if (playerTurn == 1) {
             blockLiveData.value?.get(block.id - 1)?.xOrO = "X"
-            blockLiveData.value?.get(block.id - 1)?.playerClicked = 1
+            blockLiveData.value?.get(block.id - 1)?.player = 1
             player1BlockList.add(block.id)
             drawGameBlockList.add(block.id)
             playerTurn = 2
         } else {
             blockLiveData.value?.get(block.id - 1)?.xOrO = "O"
-            blockLiveData.value?.get(block.id - 1)?.playerClicked = 2
+            blockLiveData.value?.get(block.id - 1)?.player = 2
             player2BlockList.add(block.id)
             drawGameBlockList.add(block.id)
             playerTurn = 1
         }
 
-        blockLiveData.value = blockLiveData.value
+        blockLiveData.postValue(blockLiveData.value)
         isGameOverLiveData.postValue(isGameOver())
         isDrawLiveData.postValue(isDrawGame())
-
+        updateSavedState()
     }
 
     /**
      * Method for clearing board and repopulating
      */
 
-    private fun generateBlocks(): List<Block> {
+    fun generateBlocks(): List<Block> {
         player1BlockList.clear()
         player2BlockList.clear()
         drawGameBlockList.clear()
@@ -68,7 +101,19 @@ class GameFragmentViewModel : ViewModel() {
         //Reset Values For Next Game
         playerTurn = 1
         counter = 1
+        updateSavedState()
         return blockList
+    }
+
+    private fun updateSavedState() {
+        savedState[IS_GAME_IN_PROGRESS_KEY] = isGameInProgress
+        savedState[PLAYER_1_LIST_KEY] = player1BlockList
+        savedState[PLAYER_2_LIST_KEY] = player2BlockList
+        savedState[PLAYER_TURN_KEY] = playerTurn
+        savedState[DRAW_GAME_LIST_KEY] = drawGameBlockList
+        savedState[IS_DRAW_KEY] = isDrawLiveData.value
+        savedState[IS_GAME_OVER_KEY] = isGameOverLiveData.value
+        savedState[BLOCK_LIST_KEY] = blockLiveData.value
     }
 
     /**
@@ -76,36 +121,31 @@ class GameFragmentViewModel : ViewModel() {
      */
 
     fun isDrawGame(): Boolean {
-        return drawGameBlockList.contains(1) && drawGameBlockList.contains(2) && drawGameBlockList.contains(3) &&
-            drawGameBlockList.contains(4) && drawGameBlockList.contains(5) && drawGameBlockList.contains(6) &&
-            drawGameBlockList.contains(7) && drawGameBlockList.contains(8) && drawGameBlockList.contains(9)
+        return drawGameBlockList.size == 9 && !isGameOver()
     }
 
     fun isGameOver(): Boolean {
 
-        if ((player1BlockList.contains(1) && player1BlockList.contains(2) && player1BlockList.contains(3)) ||
-            (player1BlockList.contains(4) && player1BlockList.contains(5) && player1BlockList.contains(6)) ||
-            (player1BlockList.contains(7) && player1BlockList.contains(8) && player1BlockList.contains(9)) ||
-            (player1BlockList.contains(1) && player1BlockList.contains(4) && player1BlockList.contains(7)) ||
-            (player1BlockList.contains(2) && player1BlockList.contains(5) && player1BlockList.contains(8)) ||
-            (player1BlockList.contains(3) && player1BlockList.contains(6) && player1BlockList.contains(9)) ||
-            (player1BlockList.contains(1) && player1BlockList.contains(5) && player1BlockList.contains(9)) ||
-            (player1BlockList.contains(3) && player1BlockList.contains(5) && player1BlockList.contains(7))) {
-
-            winner = 1
-            return true
-        } else if ((player2BlockList.contains(1) && player2BlockList.contains(2) && player2BlockList.contains(3)) ||
-            (player2BlockList.contains(4) && player2BlockList.contains(5) && player2BlockList.contains(6)) ||
-            (player2BlockList.contains(7) && player2BlockList.contains(8) && player2BlockList.contains(9)) ||
-            (player2BlockList.contains(1) && player2BlockList.contains(4) && player2BlockList.contains(7)) ||
-            (player2BlockList.contains(2) && player2BlockList.contains(5) && player2BlockList.contains(8)) ||
-            (player2BlockList.contains(3) && player2BlockList.contains(6) && player2BlockList.contains(9)) ||
-            (player2BlockList.contains(1) && player2BlockList.contains(5) && player2BlockList.contains(9)) ||
-            (player2BlockList.contains(3) && player2BlockList.contains(5) && player2BlockList.contains(7))) {
-
-            winner = 2
-            return true
+        winner = if (player1BlockList.size == player2BlockList.size) {
+            2
         } else
-            return false
+            1
+
+        return  (player1BlockList.contains(1) && player1BlockList.contains(2) && player1BlockList.contains(3)) ||
+                (player1BlockList.contains(4) && player1BlockList.contains(5) && player1BlockList.contains(6)) ||
+                (player1BlockList.contains(7) && player1BlockList.contains(8) && player1BlockList.contains(9)) ||
+                (player1BlockList.contains(1) && player1BlockList.contains(4) && player1BlockList.contains(7)) ||
+                (player1BlockList.contains(2) && player1BlockList.contains(5) && player1BlockList.contains(8)) ||
+                (player1BlockList.contains(3) && player1BlockList.contains(6) && player1BlockList.contains(9)) ||
+                (player1BlockList.contains(1) && player1BlockList.contains(5) && player1BlockList.contains(9)) ||
+                (player1BlockList.contains(3) && player1BlockList.contains(5) && player1BlockList.contains(7)) ||
+                (player2BlockList.contains(1) && player2BlockList.contains(2) && player2BlockList.contains(3)) ||
+                (player2BlockList.contains(4) && player2BlockList.contains(5) && player2BlockList.contains(6)) ||
+                (player2BlockList.contains(7) && player2BlockList.contains(8) && player2BlockList.contains(9)) ||
+                (player2BlockList.contains(1) && player2BlockList.contains(4) && player2BlockList.contains(7)) ||
+                (player2BlockList.contains(2) && player2BlockList.contains(5) && player2BlockList.contains(8)) ||
+                (player2BlockList.contains(3) && player2BlockList.contains(6) && player2BlockList.contains(9)) ||
+                (player2BlockList.contains(1) && player2BlockList.contains(5) && player2BlockList.contains(9)) ||
+                (player2BlockList.contains(3) && player2BlockList.contains(5) && player2BlockList.contains(7))
     }
 }

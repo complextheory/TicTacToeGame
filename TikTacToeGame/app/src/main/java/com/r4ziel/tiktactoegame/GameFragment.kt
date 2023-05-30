@@ -1,7 +1,6 @@
 package com.r4ziel.tiktactoegame
 
 import android.app.AlertDialog
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.Gravity
@@ -9,16 +8,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.r4ziel.tiktactoegame.databinding.FragmentGameBinding
-import com.r4ziel.tiktactoegame.utilities.BlockClickListner
+import com.r4ziel.tiktactoegame.utilities.BlockClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.system.exitProcess
 
 /**
- * A simple [Fragment] subclass as the default destination in the navigation.
+ * The Main Game Fragment That Handles UI Elements.
  */
 class GameFragment : Fragment() {
 
@@ -26,7 +24,7 @@ class GameFragment : Fragment() {
 
     private lateinit var binding: FragmentGameBinding
 
-    private val blockItemClickListner = object: BlockClickListner {
+    private val blockItemClickListener = object: BlockClickListener {
         override fun onBlockClicked(block: Block) {
             if (!block.isClicked && !viewModel.isGameOver() && !viewModel.isDrawGame()){
                 Toast.makeText(requireContext(), block.id.toString(), Toast.LENGTH_SHORT).show()
@@ -35,7 +33,7 @@ class GameFragment : Fragment() {
         }
     }
 
-    private val tableAdapter = TableAdapter(blockListner = blockItemClickListner)
+    private val tableAdapter = TableAdapter(blockListener = blockItemClickListener)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -51,7 +49,8 @@ class GameFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.startGame()
+        if (!viewModel.isGameInProgress)
+            viewModel.startGame()
         observeViewModel()
     }
 
