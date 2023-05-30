@@ -3,39 +3,89 @@ package com.r4ziel.tiktactoegame
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.switchMap
+import com.r4ziel.tiktactoegame.database.GameDatabase
+import com.r4ziel.tiktactoegame.entities.Block
+import com.r4ziel.tiktactoegame.entities.BlockList
+import com.r4ziel.tiktactoegame.entities.Player
 
 /**
  * Created by Jarvis Charles on 5/26/23  Main Game ViewModel Responsible for Business Logic.
  */
-class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewModel() {
+class GameFragmentViewModel(private val savedState: SavedStateHandle, database: GameDatabase) : ViewModel() {
 
     var blockLiveData: MutableLiveData<List<Block>> =
-        savedState.getLiveData<List<Block>>(BLOCK_LIST_KEY).switchMap {
-            MutableLiveData<List<Block>>()
-        } as MutableLiveData<List<Block>>
+        database.BlockDao().getAll() as MutableLiveData<List<Block>>
+
+//    var blockLiveData: MutableLiveData<List<BlockEntity>> =
+//        savedState.getLiveData<List<BlockEntity>>(BLOCK_LIST_KEY).switchMap {
+//            MutableLiveData<List<BlockEntity>>()
+//        } as MutableLiveData<List<BlockEntity>>
+
 
     var isGameOverLiveData: MutableLiveData<Boolean> =
-        savedState.getLiveData<Boolean>(IS_GAME_OVER_KEY).switchMap {
-            MutableLiveData<Boolean>()
-        } as MutableLiveData<Boolean>
+        database.GameDao().getIsGameOver(false) as MutableLiveData<Boolean>
+
+//    var isGameOverLiveData: MutableLiveData<Boolean> =
+//        savedState.getLiveData<Boolean>(IS_GAME_OVER_KEY).switchMap {
+//            MutableLiveData<Boolean>()
+//        } as MutableLiveData<Boolean>
 
     var isDrawLiveData: MutableLiveData<Boolean> =
-        savedState.getLiveData<Boolean>(IS_DRAW_KEY).switchMap {
-            MutableLiveData<Boolean>()
-        } as MutableLiveData<Boolean>
+        database.GameDao().getIsDrawGame(false) as MutableLiveData<Boolean>
+
+//    var isDrawLiveData: MutableLiveData<Boolean> =
+//        savedState.getLiveData<Boolean>(IS_DRAW_KEY).switchMap {
+//            MutableLiveData<Boolean>()
+//        } as MutableLiveData<Boolean>
 
     private var blockList =
-        savedState.get<MutableList<Block>>(BLOCK_LIST_KEY) ?: mutableListOf()
+        blockLiveData.value ?: mutableListOf()
+
+//    private var blockList =
+//        savedState.get<MutableList<Block>>(BLOCK_LIST_KEY) ?: mutableListOf()
+
     private var player1BlockList =
-        savedState.get<MutableList<Int>>(PLAYER_1_LIST_KEY) ?: mutableListOf()
+        database.GameDao().getPlayer1BlockList(BlockList(0, mutableListOf(), "player1BlockList"))
+
+//    private var player1BlockList =
+//        savedState.get<MutableList<Int>>(PLAYER_1_LIST_KEY) ?: mutableListOf()
+
     private var player2BlockList =
-        savedState.get<MutableList<Int>>(PLAYER_2_LIST_KEY) ?: mutableListOf()
+        database.GameDao().getPlayer2BlockList()
+
+//    private var player2BlockList =
+//        savedState.get<MutableList<Int>>(PLAYER_2_LIST_KEY) ?: mutableListOf()
+
     private var drawGameBlockList =
-        savedState.get<MutableList<Int>>(DRAW_GAME_LIST_KEY) ?: mutableListOf()
-    private var playerTurn: Int = savedState.get<Int>(PLAYER_TURN_KEY) ?: 1
-    var winner: Int = savedState.get<Int>(WINNER_KEY) ?: 0
-    var isGameInProgress = savedState.get<Boolean>(IS_GAME_IN_PROGRESS_KEY) ?: false
+        database.GameDao().getDrawGameBlockList()
+
+//    private var drawGameBlockList =
+//        savedState.get<MutableList<Int>>(DRAW_GAME_LIST_KEY) ?: mutableListOf()
+
+    private var playerTurn: Int =
+        if (database.GameDao().getTurns().size % 2 == 0) {
+        2
+    }else
+        1
+
+    private var player1 =
+        database.GameDao().getPlayer1(Player(
+            id = 1,
+            playerName = "Tom P1"))
+
+    private var player2 =
+        database.GameDao().getPlayer2(Player(
+            id = 2,
+            playerName =  "Bill P2"
+        ))
+
+//    private var playerTurn: Int = savedState.get<Int>(PLAYER_TURN_KEY) ?: 1
+
+    var winner: MutableLiveData<Player> = database.GameDao().getWinner(player1)?.value
+//    var winner: Int = savedState.get<Int>(WINNER_KEY) ?: 0
+
+    var isGameInProgress = database.GameDao().getIsGameInProgress(false)
+//    var isGameInProgress = savedState.get<Boolean>(IS_GAME_IN_PROGRESS_KEY) ?: false
 
     private var counter = 1
 
@@ -65,13 +115,14 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle) : ViewMode
 
         if (playerTurn == 1) {
             blockLiveData.value?.get(block.id - 1)?.xOrO = "X"
-            blockLiveData.value?.get(block.id - 1)?.player = 1
+            blockLiveData.value?.get(block.id - 1)?.playerNumber = 1
+
             player1BlockList.add(block.id)
             drawGameBlockList.add(block.id)
             playerTurn = 2
         } else {
             blockLiveData.value?.get(block.id - 1)?.xOrO = "O"
-            blockLiveData.value?.get(block.id - 1)?.player = 2
+            blockLiveData.value?.get(block.id - 1)?.playerNumber = 2
             player2BlockList.add(block.id)
             drawGameBlockList.add(block.id)
             playerTurn = 1

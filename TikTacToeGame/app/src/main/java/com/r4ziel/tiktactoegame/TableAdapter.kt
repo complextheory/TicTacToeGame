@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.r4ziel.tiktactoegame.databinding.ItemViewBlockBinding
+import com.r4ziel.tiktactoegame.entities.Block
 import com.r4ziel.tiktactoegame.utilities.BlockClickListener
 
 /**
@@ -52,7 +53,7 @@ class TableAdapter(
                 binding.blockView.setBackgroundColor(Color.BLACK)
 
                 if (block.isClicked){
-                    when (block.player) {
+                    when (block.playerNumber) {
                         1 -> binding.blockView.setBackgroundColor(Color.BLUE)
                         2 -> binding.blockView.setBackgroundColor(Color.RED)
 

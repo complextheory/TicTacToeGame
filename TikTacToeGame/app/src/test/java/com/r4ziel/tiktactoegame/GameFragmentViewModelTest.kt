@@ -3,6 +3,7 @@ package com.r4ziel.tiktactoegame
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.r4ziel.tiktactoegame.entities.Block
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule

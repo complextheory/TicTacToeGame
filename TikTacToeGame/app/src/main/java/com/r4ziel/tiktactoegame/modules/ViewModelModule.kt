@@ -8,5 +8,5 @@ import org.koin.dsl.module
  */
 
 val viewModelModule = module {
-    single { GameFragmentViewModel(get()) }
+    single { GameFragmentViewModel(get(), get()) }
 }

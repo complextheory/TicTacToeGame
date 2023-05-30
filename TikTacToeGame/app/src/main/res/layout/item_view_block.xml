@@ -8,7 +8,7 @@
         
         <variable
             name="block"
-            type="com.r4ziel.tiktactoegame.Block" />
+            type="com.r4ziel.tiktactoegame.entities.Block" />
 
         <variable
             name="blockItemClick"

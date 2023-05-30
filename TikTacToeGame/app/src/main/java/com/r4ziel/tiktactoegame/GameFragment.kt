@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.r4ziel.tiktactoegame.databinding.FragmentGameBinding
+import com.r4ziel.tiktactoegame.entities.Block
 import com.r4ziel.tiktactoegame.utilities.BlockClickListener
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import kotlin.system.exitProcess
