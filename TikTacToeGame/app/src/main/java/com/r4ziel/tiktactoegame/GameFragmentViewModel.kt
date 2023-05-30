@@ -14,7 +14,7 @@ import com.r4ziel.tiktactoegame.entities.Player
 class GameFragmentViewModel(private val savedState: SavedStateHandle, database: GameDatabase) : ViewModel() {
 
     var blockLiveData: MutableLiveData<List<Block>> =
-        database.BlockDao().getAll() as MutableLiveData<List<Block>>
+        database.BlockDao().getAll()
 
 //    var blockLiveData: MutableLiveData<List<BlockEntity>> =
 //        savedState.getLiveData<List<BlockEntity>>(BLOCK_LIST_KEY).switchMap {
@@ -22,16 +22,16 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle, database: 
 //        } as MutableLiveData<List<BlockEntity>>
 
 
-    var isGameOverLiveData: MutableLiveData<Boolean> =
-        database.GameDao().getIsGameOver(false) as MutableLiveData<Boolean>
+    var isGameOverLiveData: MutableLiveData<Boolean>? =
+        database.GameDao().getIsGameOver(false)
 
 //    var isGameOverLiveData: MutableLiveData<Boolean> =
 //        savedState.getLiveData<Boolean>(IS_GAME_OVER_KEY).switchMap {
 //            MutableLiveData<Boolean>()
 //        } as MutableLiveData<Boolean>
 
-    var isDrawLiveData: MutableLiveData<Boolean> =
-        database.GameDao().getIsDrawGame(false) as MutableLiveData<Boolean>
+    var isDrawLiveData: MutableLiveData<Boolean>? =
+        database.GameDao().getIsDrawGame(false)
 
 //    var isDrawLiveData: MutableLiveData<Boolean> =
 //        savedState.getLiveData<Boolean>(IS_DRAW_KEY).switchMap {
@@ -45,43 +45,56 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle, database: 
 //        savedState.get<MutableList<Block>>(BLOCK_LIST_KEY) ?: mutableListOf()
 
     private var player1BlockList =
-        database.GameDao().getPlayer1BlockList(BlockList(0, mutableListOf(), "player1BlockList"))
+        database.GameDao().getPlayer1BlockList(BlockList(
+            0,
+            mutableListOf(),
+            PLAYER_1_LIST_KEY
+        ))
 
 //    private var player1BlockList =
 //        savedState.get<MutableList<Int>>(PLAYER_1_LIST_KEY) ?: mutableListOf()
 
     private var player2BlockList =
-        database.GameDao().getPlayer2BlockList()
+        database.GameDao().getPlayer2BlockList(BlockList(
+            0,
+            mutableListOf(),
+            PLAYER_2_LIST_KEY
+        ))
 
 //    private var player2BlockList =
 //        savedState.get<MutableList<Int>>(PLAYER_2_LIST_KEY) ?: mutableListOf()
 
     private var drawGameBlockList =
-        database.GameDao().getDrawGameBlockList()
+        database.GameDao().getDrawGameBlockList(BlockList(
+            0,
+            mutableListOf(),
+            DRAW_GAME_LIST_KEY
+        ))
 
 //    private var drawGameBlockList =
 //        savedState.get<MutableList<Int>>(DRAW_GAME_LIST_KEY) ?: mutableListOf()
 
     private var playerTurn: Int =
-        if (database.GameDao().getTurns().size % 2 == 0) {
+        if (database.GameDao().getTurns()?.size?.rem(2)?.equals(0) == true) {
         2
     }else
         1
 
     private var player1 =
         database.GameDao().getPlayer1(Player(
-            id = 1,
-            playerName = "Tom P1"))
+            id = 0,
+            playerName = "Tom P1"
+        ))
 
     private var player2 =
         database.GameDao().getPlayer2(Player(
-            id = 2,
-            playerName =  "Bill P2"
+            id = 0,
+            playerName = "Bill P2"
         ))
 
 //    private var playerTurn: Int = savedState.get<Int>(PLAYER_TURN_KEY) ?: 1
 
-    var winner: MutableLiveData<Player> = database.GameDao().getWinner(player1)?.value
+    var winner: MutableLiveData<Player> = database.GameDao().getWinner()
 //    var winner: Int = savedState.get<Int>(WINNER_KEY) ?: 0
 
     var isGameInProgress = database.GameDao().getIsGameInProgress(false)

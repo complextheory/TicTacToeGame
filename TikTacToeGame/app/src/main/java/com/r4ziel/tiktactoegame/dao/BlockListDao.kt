@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.r4ziel.tiktactoegame.entities.Block
 import com.r4ziel.tiktactoegame.entities.BlockList
 
@@ -14,10 +15,10 @@ import com.r4ziel.tiktactoegame.entities.BlockList
 interface BlockListDao {
 
     @Query("SELECT * FROM `block-list-entity`")
-    fun getAll(): LiveData<List<List<Block>>>
+    fun getAll(): MutableLiveData<List<List<Block>>>
 
     @Query("SELECT * FROM `block-list-entity` WHERE block_list_name LIKE :name")
-    fun findByName(name: String): LiveData<Block>
+    fun findByName(name: String): MutableLiveData<Block>
 
     @Insert
     fun insertAll(vararg blockList: BlockList)

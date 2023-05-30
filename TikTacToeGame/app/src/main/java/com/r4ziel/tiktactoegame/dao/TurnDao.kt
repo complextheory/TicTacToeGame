@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.r4ziel.tiktactoegame.entities.Player
 import com.r4ziel.tiktactoegame.entities.Turn
 
@@ -14,10 +15,10 @@ import com.r4ziel.tiktactoegame.entities.Turn
 interface TurnDao {
 
     @Query("SELECT * FROM `turn-entity` WHERE player LIKE :turnNumber")
-    fun findByTurnNumber(turnNumber: Int): LiveData<Int>
+    fun findByTurnNumber(turnNumber: Int): MutableLiveData<Int>
 
     @Query("SELECT * FROM `turn-entity` WHERE player LIKE :player")
-    fun findByPlayer(player: Player): LiveData<Player>
+    fun findByPlayer(player: Player): MutableLiveData<Player>
 
     @Insert
     fun insertAll(vararg turn: Turn)

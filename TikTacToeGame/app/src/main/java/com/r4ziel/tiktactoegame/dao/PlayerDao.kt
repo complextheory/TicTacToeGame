@@ -5,6 +5,7 @@ import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
 import android.arch.persistence.room.Update
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.r4ziel.tiktactoegame.entities.Player
 
 /**
@@ -13,13 +14,13 @@ import com.r4ziel.tiktactoegame.entities.Player
 interface PlayerDao {
 
     @Query("SELECT * FROM `player-entity`")
-    fun getAll(): LiveData<List<Player>>
+    fun getAll(): MutableLiveData<List<Player>>
 
     @Query("SELECT * FROM  `player-entity` WHERE id LIKE :playerId")
-    fun findByPlayerId(playerId: Int): LiveData<Player>
+    fun findByPlayerId(playerId: Int): MutableLiveData<Player>
 
     @Query("SELECT * FROM `player-entity` WHERE player_name LIKE :playerName")
-    fun findByPlayerName(playerName: String): LiveData<Player>
+    fun findByPlayerName(playerName: String): MutableLiveData<Player>
 
     @Insert
     fun insertAll(vararg player: Player)
