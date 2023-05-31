@@ -280,7 +280,7 @@ class GameFragmentViewModelTest{
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
-        assertTrue(viewModel.isGameOver())
+        assertTrue(viewModel.winner())
     }
 
     @Test
@@ -302,7 +302,7 @@ class GameFragmentViewModelTest{
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
-        assertTrue(viewModel.isGameOver())
+        assertTrue(viewModel.winner())
     }
 
     @Test
@@ -324,7 +324,7 @@ class GameFragmentViewModelTest{
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
-        assertTrue(viewModel.isGameOver())
+        assertTrue(viewModel.winner())
     }
 
     @Test
@@ -346,7 +346,7 @@ class GameFragmentViewModelTest{
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
-        assertTrue(viewModel.isGameOver())
+        assertTrue(viewModel.winner())
     }
 
     @Test
@@ -368,7 +368,7 @@ class GameFragmentViewModelTest{
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
-        assertTrue(viewModel.isGameOver())
+        assertTrue(viewModel.winner())
     }
 
     @Test
@@ -390,7 +390,7 @@ class GameFragmentViewModelTest{
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
-        assertTrue(viewModel.isGameOver())
+        assertTrue(viewModel.winner())
     }
 
     @Test
@@ -412,6 +412,6 @@ class GameFragmentViewModelTest{
 
         viewModel = GameFragmentViewModel(savedState = savedStateHandle)
 
-        assertTrue(viewModel.isGameOver())
+        assertTrue(viewModel.winner())
     }
 }

@@ -27,7 +27,7 @@ class GameFragment : Fragment() {
 
     private val blockItemClickListener = object: BlockClickListener {
         override fun onBlockClicked(block: Block) {
-            if (!block.isClicked && !viewModel.isGameOver() && !viewModel.isDrawGame()){
+            if (!block.isClicked!! && !viewModel.winner() && !viewModel.isDrawGame()){
                 Toast.makeText(requireContext(), block.id.toString(), Toast.LENGTH_SHORT).show()
                 viewModel.updateTurn(block)
             }

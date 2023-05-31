@@ -13,6 +13,6 @@ data class Player(
     @PrimaryKey
     val id: Int,
 
-    @ColumnInfo(name = "player_name")
-    var playerName: String,
+    @ColumnInfo(name = "block_ids")
+    var blockIds: List<Int>,
 )

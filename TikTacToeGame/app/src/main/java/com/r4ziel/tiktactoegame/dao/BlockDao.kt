@@ -23,11 +23,11 @@ interface BlockDao {
     fun findByIsPlayerNumber(playerNumber: Int): MutableLiveData<Block>
 
     @Insert
-    fun insertAll(vararg todo: Block)
+    fun insertAll(vararg block: Block)
 
     @Delete
     fun delete(block: Block)
 
     @Update
-    fun updateBlocks(vararg todos: Block)
+    fun updateBlockList(vararg blockList: MutableList<Block>)
 }

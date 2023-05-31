@@ -19,15 +19,15 @@ interface PlayerDao {
     @Query("SELECT * FROM  `player-entity` WHERE id LIKE :playerId")
     fun findByPlayerId(playerId: Int): MutableLiveData<Player>
 
-    @Query("SELECT * FROM `player-entity` WHERE player_name LIKE :playerName")
-    fun findByPlayerName(playerName: String): MutableLiveData<Player>
+    @Query("SELECT * FROM  `player-entity` WHERE id LIKE :blockId")
+    fun findByBlockId(blockId: Int): MutableLiveData<Player>
+
+    @Query("SELECT * FROM `player-entity` WHERE block_ids LIKE :blockList")
+    fun getBlockList(blockList: List<Int>): MutableLiveData<List<Int>>
 
     @Insert
-    fun insertAll(vararg player: Player)
-
-    @Delete
-    fun delete(player: Player)
+    fun insertBlock(vararg blockId: Int)
 
     @Update
-    fun updatePlayers(vararg player: Player)
+    fun updateBlockList(vararg blockList: List<Int>)
 }

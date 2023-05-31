@@ -11,14 +11,11 @@ import com.r4ziel.tiktactoegame.entities.*
  * Created by Jarvis Charles on 5/30/23.
  */
 @Database(
-    entities = [Game::class, Turn::class, BlockList::class, Block::class, Player::class],
+    entities = [Block::class, Player::class],
     version = 1
 )
 abstract class GameDatabase: RoomDatabase() {
 
-    abstract fun GameDao(): GameDao
-    abstract fun TurnDao(): TurnDao
-    abstract fun BlockListDao(): BlockList
     abstract fun BlockDao(): BlockDao
     abstract fun PlayerDao(): PlayerDao
 
