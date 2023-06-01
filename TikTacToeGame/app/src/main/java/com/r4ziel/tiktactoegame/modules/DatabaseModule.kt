@@ -17,22 +17,6 @@ val dataBaseModule = module {
             "GAME_DB"
         ).build()
     }
-
-    single {
-        val database = get<GameDatabase>()
-        database.GameDao()
-    }
-
-    single {
-        val database = get<GameDatabase>()
-        database.TurnDao()
-    }
-
-    single {
-        val database = get<GameDatabase>()
-        database.BlockListDao()
-    }
-
     single {
         val database = get<GameDatabase>()
         database.BlockDao()

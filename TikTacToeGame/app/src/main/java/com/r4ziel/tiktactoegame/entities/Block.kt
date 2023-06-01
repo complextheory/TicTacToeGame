@@ -21,7 +21,7 @@ data class Block(
     var xOrO: String?,
 
     @ColumnInfo(name = "is_clicked")
-    var isClicked: Boolean?
+    var isClicked: Boolean
 
 
 )

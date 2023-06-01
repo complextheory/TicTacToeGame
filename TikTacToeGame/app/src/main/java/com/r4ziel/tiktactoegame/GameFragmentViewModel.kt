@@ -22,7 +22,6 @@ class GameFragmentViewModel(private val savedState: SavedStateHandle, private va
             MutableLiveData<Boolean>()
         } as MutableLiveData<Boolean>
 
-
     var isDrawLiveData: MutableLiveData<Boolean> =
         savedState.getLiveData<Boolean>(IS_DRAW_KEY).switchMap {
             MutableLiveData<Boolean>()

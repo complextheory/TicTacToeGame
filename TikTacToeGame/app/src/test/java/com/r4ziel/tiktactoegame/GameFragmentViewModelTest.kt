@@ -1,15 +1,22 @@
 package com.r4ziel.tiktactoegame
 
+import android.content.Context
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.r4ziel.tiktactoegame.database.GameDatabase
 import com.r4ziel.tiktactoegame.entities.Block
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.JUnit4
+import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.mock
+import org.mockito.MockitoAnnotations
+import kotlin.test.assertEquals
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 
 /**
@@ -21,6 +28,7 @@ class GameFragmentViewModelTest{
 
     private lateinit var viewModel: GameFragmentViewModel
     private lateinit var savedStateHandle: SavedStateHandle
+    private lateinit var database: GameDatabase
     private var blocklist = mutableListOf<Block>()
     private var blockLiveData = MutableLiveData<List<Block>>()
     private var player1BlockList = mutableListOf<Int>()
@@ -41,14 +49,29 @@ class GameFragmentViewModelTest{
         private const val PLAYER_TURN_KEY = "PLAYER_TURN_KEY"
         private const val IS_GAME_OVER_KEY = "IS_GAME_OVER_KEY"
         private const val IS_DRAW_KEY = "IS_DRAW_KEY"
+        private const val WINNER_KEY = "WINNER_KEY"
         private const val IS_GAME_IN_PROGRESS_KEY = "IS_GAME_IN_PROGRESS_KEY"
+        private const val PLAYER_1_BLOCK_KEY = 3
+        private const val PLAYER_2_BLOCK_KEY = -3
+        private const val PLAYER_1_KEY = 1
+        private const val PLAYER_2_KEY = -1
+        private const val IS_DRAW_GAME_KEY = 0
+        private const val LIST_FULL_KEY = 8
     }
+
+    @Mock
+    private lateinit var context: Context
 
     @get:Rule
     var instantExecutorRule = InstantTaskExecutorRule()
 
     @Before
     fun setUp() {
+
+        MockitoAnnotations.initMocks(this);
+        `when`(context.applicationContext).thenReturn(context)
+
+        database = GameDatabase(context)
         blockLiveData.postValue(generateBlocks())
         blockLiveData.postValue(blocklist)
         winner = 0
@@ -57,25 +80,45 @@ class GameFragmentViewModelTest{
         isGameOverLiveData.postValue(false)
 
     }
+//
+//    private fun generateBlocks(): List<Block> {
+//        player1BlockList.clear()
+//        player2BlockList.clear()
+//        drawGameBlockList.clear()
+//        blocklist.clear()
+//
+//        do {
+//            blocklist.add(Block("", counter, false, 0))
+//            counter ++
+//        } while (counter < 10)
+//
+//        //Reset Values For Next Game
+//        playerTurn = 1
+//        counter = 1
+//
+//        return blocklist
+//    }
+
 
     private fun generateBlocks(): List<Block> {
         player1BlockList.clear()
         player2BlockList.clear()
         drawGameBlockList.clear()
         blocklist.clear()
+        database.BlockDao().updateBlockList(blocklist)
+        database.PlayerDao().updateBlockList(player1BlockList)
+        database.PlayerDao().updateBlockList(player2BlockList)
 
         do {
-            blocklist.add(Block("", counter, false, 0))
+            blocklist.add(Block(counter, 0, "", false))
             counter ++
         } while (counter < 10)
 
         //Reset Values For Next Game
         playerTurn = 1
         counter = 1
-
         return blocklist
     }
-
     @Test
     fun gameFragmentViewModel_GameIsStarted_ValuesAreSet() {
         playerTurn = 1
@@ -91,15 +134,15 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
         viewModel.startGame()
 
         isGameInProcess = viewModel.isGameInProgress
 
         assertNotNull(blockLiveData.value)
-        assert(isGameOverLiveData.value == false)
-        assert(isDrawLiveData.value == false)
+        assertEquals(false,isGameOverLiveData.value)
+        assertEquals(false, isDrawLiveData.value)
         assert(isGameInProcess)
     }
 
@@ -118,14 +161,14 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
         viewModel.generateBlocks()
 
         assert(player1BlockList.isEmpty())
         assert(player2BlockList.isEmpty())
         assert(drawGameBlockList.isEmpty())
-        assert(blocklist.size == 9)
+        assertEquals(9, blocklist.size)
     }
 
     @Test
@@ -144,11 +187,11 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
         viewModel.updateTurn(blocklist[2])
 
-        assert(savedStateHandle.get<Int>(PLAYER_TURN_KEY) == 2)
+        assertEquals(2, savedStateHandle.get<Int>(PLAYER_TURN_KEY))
     }
 
     @Test
@@ -167,11 +210,11 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
         viewModel.updateTurn(blocklist[2])
 
-        assert(savedStateHandle.get<Int>(PLAYER_TURN_KEY) == 1)
+        assertEquals(1, savedStateHandle.get<Int>(PLAYER_TURN_KEY))
     }
 
     @Test
@@ -198,9 +241,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assert(viewModel.isDrawGame())
+        assertEquals(IS_DRAW_GAME_KEY, viewModel.winner)
     }
 
     @Test
@@ -227,9 +270,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assert(!viewModel.isDrawGame())
+        assertNotEquals(IS_DRAW_GAME_KEY, viewModel.winner)
     }
 
     @Test
@@ -256,9 +299,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assert(!viewModel.isDrawGame())
+        assertNotEquals(IS_DRAW_GAME_KEY, viewModel.winner)
     }
 
     @Test
@@ -278,9 +321,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assertTrue(viewModel.winner())
+        assertEquals(PLAYER_2_KEY, viewModel.winner)
     }
 
     @Test
@@ -300,9 +343,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assertTrue(viewModel.winner())
+        assertEquals(PLAYER_1_KEY, viewModel.winner())
     }
 
     @Test
@@ -322,9 +365,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assertTrue(viewModel.winner())
+        assertEquals(PLAYER_1_KEY, viewModel.winner())
     }
 
     @Test
@@ -344,9 +387,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assertTrue(viewModel.winner())
+        assertEquals(PLAYER_1_KEY, viewModel.winner())
     }
 
     @Test
@@ -366,9 +409,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assertTrue(viewModel.winner())
+        assertEquals(PLAYER_1_KEY, viewModel.winner())
     }
 
     @Test
@@ -388,9 +431,9 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assertTrue(viewModel.winner())
+        assertEquals(PLAYER_1_KEY, viewModel.winner())
     }
 
     @Test
@@ -410,8 +453,8 @@ class GameFragmentViewModelTest{
             IS_GAME_IN_PROGRESS_KEY to isGameInProcess
         ))
 
-        viewModel = GameFragmentViewModel(savedState = savedStateHandle)
+        viewModel = GameFragmentViewModel(savedState = savedStateHandle, database = database)
 
-        assertTrue(viewModel.winner())
+        assertEquals(PLAYER_1_KEY, viewModel.winner())
     }
 }
